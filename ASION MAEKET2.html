@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASION MARKET | Premium Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0221;
+            --glass: rgba(255, 255, 255, 0.07);
+            --accent: #ff00ff;
+            --cyan: #00d4ff;
+            --gold: #d4af37;
+            --white: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* DYNAMIK FON */
+        .blobs { position: fixed; width: 100%; height: 100%; z-index: -1; top: 0; overflow: hidden; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; animation: move 20s infinite alternate ease-in-out; }
+        .blob-1 { width: 500px; height: 500px; background: var(--accent); top: -10%; left: -5%; }
+        .blob-2 { width: 450px; height: 450px; background: var(--cyan); bottom: -10%; right: -5%; animation-delay: -5s; }
+        @keyframes move { from { transform: translate(0,0) scale(1); } to { transform: translate(60px, 100px) scale(1.1); } }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+        }
+
+        /* 1. LOGIN SECTION (RASM ASOSIDA) */
+        #login-screen {
+            position: fixed; inset: 0; display: flex; justify-content: center; align-items: center;
+            z-index: 1000; background: var(--bg); transition: 0.8s;
+        }
+        .login-card {
+            width: 380px; padding: 50px 40px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .user-avatar {
+            width: 90px; height: 90px; border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%; margin: 0 auto 30px; display: flex;
+            justify-content: center; align-items: center; font-size: 40px; color: var(--cyan);
+        }
+        .login-input-wrap { position: relative; margin-bottom: 15px; }
+        .login-input-wrap i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+        .login-input {
+            width: 100%; padding: 12px 15px 12px 45px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; color: white; outline: none;
+        }
+        .login-btn {
+            width: 100%; padding: 14px; margin-top: 25px; border-radius: 50px; border: none;
+            background: #ffe5d9; color: #d100d1; font-weight: 800; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 10px; transition: var(--transition);
+        }
+        .login-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 229, 217, 0.4); }
+
+        /* 2. MARKET SECTION */
+        #market-content { display: none; opacity: 0; padding-bottom: 50px; }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; margin: 20px auto; width: 90%; z-index: 10;
+        }
+        .logo { font-size: 26px; font-weight: 800; letter-spacing: 2px; }
+        .logo span { color: var(--accent); }.nav-actions { display: flex; gap: 15px; }
+        .nav-btn {
+            width: 45px; height: 45px; display: flex; justify-content: center; align-items: center;
+            border: none; color: white; cursor: pointer; transition: var(--transition); position: relative;
+        }
+        .nav-btn:hover { background: var(--accent); transform: translateY(-3px); }
+        .badge {
+            position: absolute; top: -5px; right: -5px; background: var(--cyan);
+            font-size: 10px; padding: 3px 6px; border-radius: 50%; font-weight: bold;
+        }
+
+        /* GRID & CARDS */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; width: 90%; margin: 30px auto;
+        }
+        .card { padding: 20px; text-align: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.05); }
+        .card:hover { transform: translateY(-15px); border-color: var(--gold); background: rgba(255,255,255,0.12); }
+        .card img { width: 100%; height: 450px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; }
+        .card h3 { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 10px; color: var(--gold); }
+        .price { font-size: 24px; font-weight: bold; color: var(--cyan); margin-bottom: 20px; }
+
+        .btn-action {
+            width: 100%; padding: 12px; border: none; border-radius: 12px; font-weight: bold;
+            cursor: pointer; transition: 0.3s; margin-bottom: 10px; text-transform: uppercase;
+        }
+        .btn-cart { background: linear-gradient(45deg, var(--accent), #9d00ff); color: white; }
+        .btn-tg { background: #0088cc; color: white; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-action:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        /* PROFIL MODAL (YON PANEL) */
+        #profile-modal {
+            position: fixed; top: 0; right: -400px; width: 380px; height: 100%;
+            z-index: 2000; padding: 50px 30px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(15, 2, 33, 0.98); border-left: 1px solid var(--gold);
+        }
+        #profile-modal.active { right: 0; }
+        .profile-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .profile-field { margin-bottom: 20px; }
+        .profile-field label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--gold); }
+        .profile-input {
+            width: 100%; padding: 14px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; outline: none;
+        }
+        .btn-save {
+            width: 100%; padding: 16px; background: var(--cyan); border: none;
+            border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 30px;
+        }
+
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 1500; }
+        
+        .section-title { text-align: center; font-size: 32px; margin-top: 20px; letter-spacing: 4px; font-family: 'Playfair Display'; }
+    </style>
+</head>
+<body>
+
+    <div class="blobs"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+    <div class="overlay" id="overlay" onclick="closeProfile()"></div>
+
+    <section id="login-screen">
+        <div class="login-card glass">
+            <div class="user-avatar"><i class="fa-regular fa-user"></i></div>
+            <div class="login-input-wrap">
+                <i class="fa-solid fa-at"></i>
+                <input type="text" class="login-input" placeholder="Foydalanuvchi nomi">
+            </div>
+            <div class="login-input-wrap">
+                <i class="fa-solid fa-key"></i>
+                <input type="password" class="login-input" placeholder="Parol">
+            </div>
+            <button class="login-btn" onclick="initApp()">
+                KIRISH <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+        </div>
+    </section><div id="market-content">
+        <nav class="glass">
+            <div class="logo">ASION <span>MARKET</span></div>
+            <div class="nav-actions">
+                <button class="nav-btn glass"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button class="nav-btn glass">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="badge" id="cart-count">0</span>
+                </button>
+                <button class="nav-btn glass" onclick="openProfile()"><i class="fa-solid fa-user-gear"></i></button>
+            </div>
+        </nav>
+
+        <h2 class="section-title">KITOBLAR TO'PLAMI</h2>
+
+        <div class="grid">
+            <div class="card glass">
+                <img src="https://i.ibb.co/HTSQrVCx/photo-2026-04-02-14-21-32.jpg" alt="photo-2026-04-02-14-21-32" border="0"></a> alt="Buyuk Insonlar">
+                <h3>BUYUK INSONLAR</h3>
+                <div class="price">55,000 SO'M</div>
+                <button class="btn-action btn-cart" onclick="updateCart()">Savatga qo'shish</button>
+                <button class="btn-action btn-tg" onclick="sendOrder('Buyuk Insonlar', '55,000')">
+                    <i class="fa-brands fa-telegram"></i> Buyurtma berish
+                </button>
+            </div>
+
+            <div class="card glass">
+                <img src="https://i.ibb.co/Jjfm66RX/photo-2026-04-02-14-18-54.jpg" alt="photo 2026 04 02 14 18 54" border="0"></a>" alt="Sirli Qo'llar">
+                <h3>SIRLI QO'LLAR</h3>
+                <div class="price">45,000 SO'M</div>
+                <button class="btn-action btn-cart" onclick="updateCart()">Savatga qo'shish</button>
+                <button class="btn-action btn-tg" onclick="sendOrder('Sirli Qo\'llar', '45,000')">
+                    <i class="fa-brands fa-telegram"></i> Buyurtma berish
+                </button>
+            </div>
+
+            <div class="card glass">
+                <img src="https://i.ibb.co/zhQkyFHN/photo-2026-04-02-14-18-51.jpg" alt="photo-2026-04-02-14-18-51" border="0"></a>" alt="Asion Index">
+                <h3>ASION INDEX 2026</h3>
+                <div class="price">39,990 SO'M</div>
+                <button class="btn-action btn-cart" onclick="updateCart()">Savatga qo'shish</button>
+                <button class="btn-action btn-tg" onclick="sendOrder('Asion Index 2026', '39,990')">
+                    <i class="fa-brands fa-telegram"></i> Buyurtma berish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-modal">
+        <div class="profile-head">
+            <h2>PROFIL</h2>
+            <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="closeProfile()"></i>
+        </div>
+        
+        <div class="profile-field">
+            <label>ISM VA FAMILYA</label>
+            <input type="text" id="p-name" class="profile-input" placeholder="Masalan: Alisher">
+        </div>
+        <div class="profile-field">
+            <label>TELEFON RAQAM</label>
+            <input type="text" id="p-phone" class="profile-input" placeholder="+998 90 123 45 67">
+        </div>
+        <div class="profile-field">
+            <label>YASHASH MANZILI</label>
+            <input type="text" id="p-addr" class="profile-input" placeholder="Viloyat, tuman, uy...">
+        </div>
+
+        <button class="btn-save" onclick="saveProfile()">MA'LUMOTLARNI SAQLASH</button>
+        <p id="save-status" style="text-align:center; margin-top:15px; color:var(--cyan); font-size:12px;"></p>
+    </div>
+
+    <script>
+        // 1. Dasturni ishga tushirish (Login)
+        function initApp() {
+            const login = document.getElementById('login-screen');
+            const market = document.getElementById('market-content');
+            
+            login.style.opacity = '0';
+            login.style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                login.style.display = 'none';
+                market.style.display = 'block';
+                setTimeout(() => {
+                    market.style.opacity = '1';
+                }, 50);
+            }, 800);
+        }// 2. Profil funksiyalari
+        function openProfile() {
+            document.getElementById('profile-modal').classList.add('active');
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeProfile() {
+            document.getElementById('profile-modal').classList.remove('active');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function saveProfile() {
+            const user = {
+                name: document.getElementById('p-name').value,
+                phone: document.getElementById('p-phone').value,
+                addr: document.getElementById('p-addr').value
+            };
+            localStorage.setItem('asion_user', JSON.stringify(user));
+            
+            const status = document.getElementById('save-status');
+            status.innerText = "MUVAFFAQIYATLI SAQLANDI!";
+            setTimeout(() => { status.innerText = ""; closeProfile(); }, 1500);
+        }
+
+        // Yuklanganda ma'lumotlarni tiklash
+        window.onload = () => {
+            const saved = JSON.parse(localStorage.getItem('asion_user'));
+            if(saved) {
+                document.getElementById('p-name').value = saved.name || '';
+                document.getElementById('p-phone').value = saved.phone || '';
+                document.getElementById('p-addr').value = saved.addr || '';
+            }
+        };
+
+        // 3. Savatcha
+        let count = 0;
+        function updateCart() {
+            count++;
+            document.getElementById('cart-count').innerText = count;
+            const btn = event.target;
+            const original = btn.innerText;
+            btn.innerText = "QO'SHILDI ✓";
+            btn.style.background = "#00ff88";
+            setTimeout(() => {
+                btn.innerText = original;
+                btn.style.background = "linear-gradient(45deg, var(--accent), #9d00ff)";
+            }, 1000);
+        }
+
+        // 4. Telegram Buyurtma
+function sendOrder(tavar, narx) {
+    const user = JSON.parse(localStorage.getItem('asion_user'));
+
+    // Mana bu yerda mantiqiy "yoki" (||) ishlatilishi shart:
+    if(!user || !user.name || !user.phone) {
+        alert("Iltimos, avval Profil bo'limiga kirib ma'lumotlaringizni saqlang!");
+        openProfile();
+        return;
+    }
+
+    const xabar = `🛍 YANGI BUYURTMA (ASION MARKET)\n\n📦 Tovar: ${tavar}\n💰 Narxi: ${narx} SO'M\n\n👤 Mijoz: ${user.name}\n📞 Tel: ${user.phone}\n📍 Manzil: ${user.addr || 'Ko\'rsatilmagan'}`;
+    const encoded = encodeURIComponent(xabar);
+    window.open(`https://t.me/Almuhamadd?text=${encoded}`, '_blank');
+}
+
+    </script>
+</body>
+</html>
